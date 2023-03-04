@@ -135,6 +135,7 @@ def create_gadget_path(k, l):
     # connecting the gadgets
     for i in range(0, l-1):
         connect_gadgets(graph, k, i, i+1)
+    connect_gadgets(graph, k, l-1, 0)
     return graph
 
 

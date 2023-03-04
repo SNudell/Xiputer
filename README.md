@@ -33,7 +33,7 @@ hardware might speed things up quite a bit and if you have the resources feel fr
 Furthermore this was designed to run on macos, but will most likely also work on any sort of linux machine.
 
 ### Complexity
-Obviously, since determining whether a graph is k-colorable is NP-hard, so for large instances this tool will not 
+Obviously, since determining whether a graph is k-colorable is NP-hard, for large instances this tool will not 
 produce answers quickly, if at all. However it is nice to test theories in small examples. One Note is that the number
 of variables of the cnf formula will be exactly the number of nodes of the graph times the number of available colors.
 Moreover for each node there will be a clause with k variables and a:="k choose 2" clauses with 2 variables.
