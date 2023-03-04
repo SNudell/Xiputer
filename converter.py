@@ -28,6 +28,8 @@ def g_to_sat(graph, c=3, output="is_3_colorable.cnf"):
             for l in range(c):
                 # for each color both nodes can't have the same color
                 formula += str(-(id + l)) + " " + str(-(neighbour_id +l)) + " 0\n"
+    # optimisation: we can always just w.l.o.g. fix the first node to have color 1
+    formula += "1 0\n"
     n_lines = formula.count('\n')
     f = open(output, "a")
     f.write("p cnf " + str(n_var) + " " + str(n_lines)+"\n")
