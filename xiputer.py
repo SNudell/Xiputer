@@ -97,8 +97,8 @@ def test_klein_bottle():
 
 
 def test_gadget_cycle():
-    l = 3
-    k = 4
+    l = 5
+    k = 7
     output = "is_GC" + str(k) + "x" + str(l) + "_colorable.cnf"
     graph = generator.create_gadget_cycle(k, l)
     print("graph generated")
@@ -124,4 +124,4 @@ def test_gadget_klein_bottle():
     compute_chromatic_number_downward(graph, filename=output)
 
 
-test_gadget_path()
+test_gadget_cycle()
