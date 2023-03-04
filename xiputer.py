@@ -4,7 +4,7 @@ import os
 import subprocess
 
 solver_command = "kissat"
-solver_flags ="-q"
+solver_flags = "-q"
 unsat_parse_string = "UNSATISFIABLE"
 sat_parse_string = "SATISFIABLE"
 
@@ -16,6 +16,15 @@ def compute_chromatic_number(graph, start=2, filename="colorability_test.cnf", v
         c += 1
         colorable = convert_and_test_colorability(graph, c, filename, verbose)
     print('chromatic number is ' + str(c))
+
+
+def compute_chromatic_number_downward(graph, start=20, filename="colorability_test.cnf", verbose=True):
+    colorable = True
+    c = start + 1
+    while colorable:
+        c -= 1
+        colorable = convert_and_test_colorability(graph, c, filename, verbose)
+    print('chromatic number is ' + str(c+1))
 
 
 def convert_and_test_colorability(graph, c, filename="colorability_test.cnf", verbose=True):
@@ -65,35 +74,54 @@ def test_cycle():
 def test_grid():
     n = 17
     m = 10
-    output = "is_Grid" + str(n) +"x"+ str(m) + "_colorable.cnf"
-    graph = generator.create_grid(n,m)
+    output = "is_Grid" + str(n) + "x" + str(m) + "_colorable.cnf"
+    graph = generator.create_grid(n, m)
     compute_chromatic_number(graph, filename=output)
 
 
 def test_torus():
     n = 17
     m = 11
-    output = "is_Torus" + str(n) +"x"+ str(m) + "_colorable.cnf"
-    graph = generator.create_torus(n,m)
+    output = "is_Torus" + str(n) + "x" + str(m) + "_colorable.cnf"
+    graph = generator.create_torus(n, m)
     compute_chromatic_number(graph, filename=output)
 
 
 def test_klein_bottle():
-    n = 5
-    m = 4
-    output = "is_KB" + str(n) +"x"+ str(m) + "_colorable.cnf"
-    graph = generator.create_klein_bottle(n,m)
+    n = 3
+    m = 2
+    output = "is_KB" + str(n) + "x" + str(m) + "_colorable.cnf"
+    graph = generator.create_klein_bottle(n, m)
     print("graph generated")
     compute_chromatic_number(graph, filename=output)
 
 
 def test_gadget_cycle():
-    l = 7
-    k = 3
-    output = "is_GC" + str(k) +"x"+ str(l) + "_colorable.cnf"
-    graph = generator.create_gadget_cycle(k,l)
+    l = 3
+    k = 4
+    output = "is_GC" + str(k) + "x" + str(l) + "_colorable.cnf"
+    graph = generator.create_gadget_cycle(k, l)
     print("graph generated")
     compute_chromatic_number(graph, filename=output)
 
 
-test_gadget_cycle()
+def test_gadget_path():
+    l = 10
+    k = 7
+    output = "is_GC" + str(k) + "x" + str(l) + "_colorable.cnf"
+    graph = generator.create_gadget_path(k, l)
+    print("graph generated")
+    compute_chromatic_number(graph, filename=output)
+
+
+def test_gadget_klein_bottle():
+    n = 17
+    m = 17
+    k = 3
+    output = "is_" + str(k) + "-GKB" + str(n) + "x" + str(m) + "_colorable.cnf"
+    graph = generator.create_gadget_klein_bottle(n, m, k)
+    print("graph generated")
+    compute_chromatic_number_downward(graph, filename=output)
+
+
+test_gadget_klein_bottle()

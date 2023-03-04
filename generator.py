@@ -81,7 +81,7 @@ def create_klein_bottle(n, m):
         right = id+1
         if column == m-1:  # last column wrap around right
             right = (n-1-row) * m  # first element in antipolar row
-        neighbours = [top,left,right,bottom]
+        neighbours = [top, left, right, bottom]
         graph.append(neighbours)
     return graph
 
@@ -102,26 +102,56 @@ def create_gadget(k):
 
 
 def create_gadget_cycle(k, l):
+    graph = create_gadgets(k, l)
+    # connecting the two gadgets from newly created backwards
+    connect_gadgets(graph, k, l-1, 0)
+    for i in range(0,l-1):
+        connect_gadgets(graph, k, i, i+1)
+    return graph
+
+
+def create_gadgets(k, n):
     graph = []
-    for j in range(l):
-        offset = j * k*k
+    for j in range(n):
+        offset = j * k * k
         # creating the next gadget
-        for id in range(offset, offset + k*k):
-            local_id = id % (k*k)
+        for id in range(offset, offset + k * k):
+            local_id = id % (k * k)
             row = int(local_id / k)
             column = local_id - row * k
             neighbours = []
-            for i in range(offset, offset + k*k):
+            for i in range(offset, offset + k * k):
                 local_i = i % (k * k)
                 row_i = int(local_i / k)
                 column_i = local_i - row_i * k
                 if row_i != row and column_i != column:
                     neighbours.append(i)
             graph.append(neighbours)
-    # connecting the two gadgets from newly created backwards
-    connect_gadgets(graph, k, l-1, 0)
-    for i in range(0,l-1):
+    return graph
+
+
+def create_gadget_path(k, l):
+    graph = create_gadgets(k, l)
+    # connecting the gadgets
+    for i in range(0, l-1):
         connect_gadgets(graph, k, i, i+1)
+    return graph
+
+
+def create_gadget_klein_bottle(n, m, k):
+    graph = create_gadgets(k, n*m)
+    # gridstructure inside
+    for row in range(n):
+        for column in range(m):
+            id = row * m + column
+            right = id + 1
+            if column == m-1:
+                right = (n - 1 - row) * m
+            bottom = id + m
+            if row == n-1:
+                bottom = column
+            connect_gadgets(graph, k, id, right)
+            connect_gadgets(graph, k, id, bottom)
     return graph
 
 
